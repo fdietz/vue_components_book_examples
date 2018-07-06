@@ -1,0 +1,10 @@
+body {
+  /* background: #e5edfd; */
+  background: #f9efef;
+  margin: 2rem;
+}
+
+#demo {
+  display: flex;
+}
+

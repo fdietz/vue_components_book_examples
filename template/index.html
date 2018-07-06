@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/image_card.css">
+</head>
+
+<body>
+  <div id="demo">
+    <image-card></image-card>
+    <image-card></image-card>
+  </div>
+
+  <template id="template-image-card">
+    <div class="card">
+      <img class="card-image" src="https://images.unsplash.com/photo-1457410129867-5999af49daf7?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=db366be68b7ffcb315597fcf0c1b6a51&auto=format&fit=crop&w=315&q=80" />
+      <div class="card-meta">
+        <h3>Cholula, Mexico</h3>
+        <div class="author">Image by @lemepe</div>
+        <div class="heart transparent" @click="count++">
+          <svg viewBox="0 0 32 29.6">
+            <path id="heart-icon" d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454
+    C30,20.335,16,28.261,16,28.261z"/>            
+    </svg>
+          </svg>
+        </div>
+        <p class="status">You clicked me {{ count }}</p>
+      </div>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script src='app.js' type="text/javascript"></script>
+</body>
+</html>

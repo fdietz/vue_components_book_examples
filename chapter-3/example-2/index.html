@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/modal.css">
+</head>
+
+<body>
+  <div id="demo">
+    <modal v-if="showModal" @close="showModal = false">
+      <h2 slot="header">Modal Header</h2>
+      <div slot="body">Modal Body</div>
+    </modal>
+    <button @click="showModal = true">Show Modal</button>
+  </div>
+
+  <template id="template-modal">
+    <div class="modal-background" @click.self="$emit('close')">
+      <div class="modal-container">
+        <div class="modal-header">
+          <slot name="header"></slot>
+        </div>
+        <div class="modal-body">
+          <slot name="body"></slot>
+        </div>
+        <div class="modal-footer">
+          <slot name="footer">
+            <button @click="$emit('close')">Close</button>
+          </slot>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+  Vue.component("modal", {
+    template: "#template-modal"
+  });
+
+  new Vue({ 
+    el: '#demo',
+    data: {
+      showModal: false
+    }
+  });
+  </script>
+</body>
+</html>

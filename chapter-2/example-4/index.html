@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/image_card.css">
+</head>
+
+<body>
+  <div id="demo">
+    <image-card image-src="cat.jpg" heading="Striped Tiger Cat" text="Image by @lemepe"></image-card>
+    <image-card image-src="cat.jpg" heading="Alternative Text" text="alternative subtitle"></image-card>
+  </div>
+
+  <template id="template-image-card">
+    <div class="image-card">
+        <img class="image-card__image" :src="'../../shared/'+imageSrc" />
+      <div class="image-card__body">
+          <h3 class="image-card__heading">{{heading}}</h3>
+        <div class="image-card__author">{{text}}</div>
+        <div class="image-card__heart" @click="count++">
+          <svg viewBox="0 0 32 29.6">
+            <path d="M16,28.261c0,0-14-7.926-14-17.046c0-9.356,13.159-10.399,14-0.454c1.011-9.938,14-8.903,14,0.454 C30,20.335,16,28.261,16,28.261z"/>            
+          </svg>
+        </div>
+        <div class="image-card__count" v-if="count > 0">{{count}}</div>
+      </div>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+   Vue.component('image-card', {
+    template: "#template-image-card",
+    props: {
+      heading: String,
+      text: String,
+      imageSrc: String
+    },
+    data: function () {
+      return {
+        count: 0
+      }
+    }
+  });
+
+  new Vue({ el: '#demo' });
+  </script>
+</body>
+</html>
