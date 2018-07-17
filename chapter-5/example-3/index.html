@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/expandable.css">
+  <style>
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <Toggle @change="handleChange">
+      <div slot-scope="{active, toggle, togglerProps}" class="expandable">
+        <h2 class="expandable__header">
+          Heading 2
+          <button class="expandable__trigger" @click="toggle" v-bind="togglerProps">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
+              <rect v-if="active" height="8" width="2" y="1" x="4"/>
+              <rect height="2" width="8" y="4" x="1"/>
+            </svg> 
+          </button>
+        </h2>
+        <div v-if="active" class="expandable__content">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+        </div>
+      </div>
+    </Toggle>
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    Vue.component("Toggle", {
+      render() {
+        return this.$scopedSlots.default({
+          active: this.active, 
+          toggle: this.toggle,
+          togglerProps: {
+            'aria-expanded': this.active
+          }
+        });
+      },
+      data() {
+        return {
+          active: false
+        }
+      },
+      methods: {
+        toggle() {
+          this.active = !this.active;
+          this.$emit("change", this.active);
+        }
+      }
+    });
+
+    new Vue({ 
+      el: '#demo',
+      methods: {
+        handleChange(active) {
+          console.log("> changed to ", active)
+        }
+      }
+    });
+  </script>
+</body>
+</html>

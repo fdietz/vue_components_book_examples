@@ -1,0 +1,29 @@
+.expandable {
+  width: 100%;
+}
+
+.expandable__header {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0.5em 0;
+
+  border-top: 2px solid #555;
+}
+
+.expandable__trigger {
+  all: inherit;
+  margin-left: auto;
+  border: 0;
+}
+
+.expandable__trigger svg {
+  height: 1em;
+  margin-left: 0.5em;
+  fill: #555;
+}
+
+.expandable__trigger:focus svg {
+  outline: 2px solid #aaa;
+}
+

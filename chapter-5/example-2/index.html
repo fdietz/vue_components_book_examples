@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/button.css">
+  <link rel="stylesheet" href="../../shared/switch.css">
+  <style>
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
+    }
+
+    section {
+      margin: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <section>
+      <h2>Button Toggle</h2>
+      <Toggle @change="handleChange">
+        <div slot-scope="{active, toggle}">
+          <button @click="toggle" class="button">Toggle</button>
+          <div>{{active ? "yes" : "no"}}</div>
+        </div>
+      </Toggle>
+    </section>
+    
+    <section>
+      <h2>Switch Toggle</h2>
+      <Toggle @change="handleChange">
+        <div slot-scope="{active, toggle}">
+          <switch-toggle :value="active" @input="toggle"></switch-toggle>
+          <div>{{active ? "yes" : "no"}}</div>
+        </div>
+      </Toggle>
+    </section>
+  </div>
+
+  <template id="switch-template">  
+    <label class="switch">
+      <input type="checkbox" :checked="value" @change="$emit('input', $event.target.checked)"/>
+      <div class="switch-knob"></div>
+    </label>
+  </template>
+  
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    Vue.component("SwitchToggle", {
+      template: "#switch-template",
+      data() {
+        return {
+          value: false
+        }
+      }
+    });
+
+    Vue.component("Toggle", {
+      render() {
+        return this.$scopedSlots.default({
+          active: this.active, 
+          toggle: this.toggle
+        });
+      },
+      data() {
+        return {
+          active: false
+        }
+      },
+      methods: {
+        toggle() {
+          this.active = !this.active;
+          this.$emit("change", this.active);
+        }
+      }
+    });
+
+    new Vue({ 
+      el: '#demo',
+      methods: {
+        handleChange(active) {
+          console.log("> changed to ", active)
+        }
+      }
+    });
+  </script>
+</body>
+</html>
