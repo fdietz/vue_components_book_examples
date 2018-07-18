@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <style>
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
+    }
+
+    section {
+      margin: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <card-profile first-name="Michael" age="30" />
+    <card-profile first-name="Lana" age="32" />
+  </div>
+
+  <template id="card-profile-template">  
+    <div>
+      <h2>My Profile</h2>
+      <div>
+        {{translate("firstName")}}: {{firstName}}
+      </div>
+      <div>
+        {{translate("age")}}: {{age}}
+      </div>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    const TRANSLATIONS = {
+      en: {
+        firstName: "Firstname",
+        age: "Age"
+      },
+      de: {
+        firstName: "Vorname",
+        age: "Alter"
+      }
+    };
+
+    const Translate = Vue.mixin({
+      methods: {
+        translate(key) {
+          return TRANSLATIONS[this.$root.locale][key];
+        }
+      },
+      ready() {
+        // default locale set to "en"
+        this.$root.$set("locale", "en");
+      }
+    });
+
+    Vue.component("card-profile", {
+      template: "#card-profile-template",
+      props: {
+        firstName: String,
+        age: String
+      }
+    });
+
+    new Vue({ 
+      el: '#demo',
+      mixins: [Translate],
+      data: {
+        locale: "en"
+      }
+    });
+  </script>
+</body>
+</html>

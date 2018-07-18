@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <style>
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
+    }
+
+    section {
+      margin: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <article-card />
+  </div>
+
+  <template id="article-card-template">  
+    <div>
+      <h1>My Article</h1>
+      <span v-if="loading">Loading...</span>
+      <div>
+        {{response.body}}
+      </div>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+
+  <script>
+    const DataLoader = Vue.mixin({
+      data() {
+        return {
+          loading: false,
+          response: null
+        }
+      },
+      methods: {
+        load(url) {
+          console.log("load", url)
+          this.loading = true;
+          return axios.get(url)
+            .then(response => {
+              this.response = response.data;
+              this.loading = false;
+            })
+        }
+      }
+    });
+
+    Vue.component("article-card", {
+      mixins: [DataLoader],
+      template: "#article-card-template",
+      created() {
+        console.log("created")
+        this.load("https://jsonplaceholder.typicode.com/posts/1")
+      }
+    });
+
+    new Vue({ 
+      el: '#demo'
+    });
+  </script>
+</body>
+</html>

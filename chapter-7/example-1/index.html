@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <style>
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
+    }
+
+    section {
+      margin: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <survey-input-text question="What's your name?" placeholder="e.g. Michael Jordan" @input="handleChange"></survey-input-text>
+    <survey-input-radio question="What's your favourite JS framework?" :options="['Angular', 'React', 'Vue.js']" @change="handleChange"></survey-input-radio>
+    <survey-input-checkbox question="Do you like to use JSX in the future?" @change="handleChange"></survey-input-checkbox>
+  </div>
+
+  <template id="survey-input-text">  
+    <div>
+      <h2>{{question}}</h2>
+      <input v-model="value" :placeholder="placeholder"/>
+    </div>
+  </template>
+  
+  <template id="survey-input-radio">  
+    <div>
+      <h2>{{question}}</h2>
+      <div v-for="option in options" key="option">
+        <label>
+          <input type="radio" :value="option" v-model="value">
+          {{option}}
+        </label>
+      </div> 
+    </div>
+  </template>
+  
+  <template id="survey-input-checkbox">  
+    <div>
+      <h2>{{question}}</h2>
+      <label>
+        <input type="checkbox" ng-modal="value">
+        Yes, I love it!
+      </label>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    const SurveyInputBase = Vue.extend({
+      props: {
+        question: {
+          type: String,
+          required: true
+        }
+      },
+      data() {
+        return {
+          value: null
+        }
+      },
+      methods: {
+        triggerChange() {
+          this.$emit("change", this.data);
+        }
+      }
+    });
+
+    Vue.component("SurveyInputText", {
+      extends: SurveyInputBase,
+      template: "#survey-input-text",
+      props: {
+        placeholder: {
+          type: String,
+          required: true
+        }
+      }
+    });
+
+    Vue.component("SurveyInputRadio", {
+      extends: SurveyInputBase,
+      template: "#survey-input-radio",
+      props: {
+        options: {
+          type: Array,
+          required: true
+        }
+      }
+    });
+    
+    Vue.component("SurveyInputCheckbox", {
+      extends: SurveyInputBase,
+      template: "#survey-input-checkbox"
+    });
+
+    new Vue({ 
+      el: '#demo',
+      methods: {
+        handleChange(newValue) {
+          console.log("> changed to ", newValue)
+        }
+      }
+    });
+  </script>
+</body>
+</html>
