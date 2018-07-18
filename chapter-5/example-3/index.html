@@ -23,10 +23,10 @@
 <body>
   <div id="demo">
     <Toggle @change="handleChange">
-      <div slot-scope="{active, toggle, togglerProps}" class="expandable">
+      <div slot-scope="{active, toggle}" class="expandable">
         <h2 class="expandable__header">
           Heading 2
-          <button class="expandable__trigger" @click="toggle" v-bind="togglerProps">
+          <button class="expandable__trigger" @click="toggle" aria-expanded="active">
             <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
               <rect v-if="active" height="8" width="2" y="1" x="4"/>
               <rect height="2" width="8" y="4" x="1"/>
@@ -46,10 +46,7 @@
       render() {
         return this.$scopedSlots.default({
           active: this.active, 
-          toggle: this.toggle,
-          togglerProps: {
-            'aria-expanded': this.active
-          }
+          toggle: this.toggle
         });
       },
       data() {

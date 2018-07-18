@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/expandable.css">
+  <style>
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <request url="https://jsonplaceholder.typicode.com/posts/1">
+      <div slot-scope="{loading, data}">
+        <div v-if="loading">Loading...</div>
+        <div v-if="!loading">
+          {{data.title}}
+          {{data.body}}
+        </div>
+      </div>
+    </request>
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+  <script>
+    Vue.component("Request", {
+      render() {
+        return this.$scopedSlots.default({
+          loading: this.loading,
+          data: this.response && this.response.data
+        });
+      },
+      props: {
+        url: String
+      },
+      data() {
+        return {
+          loading: true,
+          response: null
+        }
+      },
+      created() {
+        axios.get(this.url)
+          .then(response => {
+            this.response = response;
+            this.loading = false;
+          })
+      }
+    });
+
+    new Vue({ 
+      el: '#demo'
+    });
+  </script>
+</body>
+</html>

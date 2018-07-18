@@ -22,47 +22,58 @@
 
 <body>
   <div id="demo">
-    <request url="https://jsonplaceholder.typicode.com/posts/1">
-      <div slot-scope="{loading, data}">
-        <div v-if="loading">Loading...</div>
-        <div v-if="!loading">
-          {{data.title}}
-          {{data.body}}
+    <Toggle @change="handleChange">
+      <div slot-scope="{active, togglerProps, togglerEvents}" class="expandable">
+        <h2 class="expandable__header">
+          Heading 2
+          <button class="expandable__trigger" v-bind="togglerProps" v-on="togglerEvents" >
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
+              <rect v-if="active" height="8" width="2" y="1" x="4"/>
+              <rect height="2" width="8" y="4" x="1"/>
+            </svg> 
+          </button>
+        </h2>
+        <div v-if="active" class="expandable__content">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
         </div>
       </div>
-    </request>
+    </Toggle>
   </div>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
   <script>
-    Vue.component("Request", {
+    Vue.component("Toggle", {
       render() {
         return this.$scopedSlots.default({
-          loading: this.loading,
-          data: this.response && this.response.data
+          active: this.active, 
+          togglerProps: {
+            'aria-expanded': this.active
+          },
+          togglerEvents: {
+            'click': this.toggle
+          }
         });
-      },
-      props: {
-        url: String
       },
       data() {
         return {
-          loading: true,
-          response: null
+          active: false
         }
       },
-      created() {
-        axios.get(this.url)
-          .then(response => {
-            this.response = response;
-            this.loading = false;
-          })
+      methods: {
+        toggle() {
+          this.active = !this.active;
+          this.$emit("change", this.active);
+        }
       }
     });
 
     new Vue({ 
-      el: '#demo'
+      el: '#demo',
+      methods: {
+        handleChange(active) {
+          console.log("> changed to ", active)
+        }
+      }
     });
   </script>
 </body>
