@@ -31,14 +31,15 @@
   <script>
     Vue.component("hello-world", {
       functional: true,
-      render(createElement, context) {
+      render(createElement, {data, listeners, slots}) {
         return createElement("div", { class: "hello" }, [
+          createElement('h2', data.attrs.msg),
           createElement('button', { 
             on: { 
-              click: context.listeners.click 
+              click: listeners.click 
             } 
           }, 'Click me'), 
-          context.slots().default
+          slots().default
         ]);
       }
     });
