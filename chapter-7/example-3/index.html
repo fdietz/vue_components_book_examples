@@ -17,31 +17,33 @@
       color: #555;
     }
 
-    section {
-      margin: 1rem;
+    .article-card {
+      border-top: 2px solid #555;
+      margin-bottom: 1rem;
+      padding: 1rem;
     }
+    
   </style>
 </head>
 
 <body>
   <div id="demo">
-    <article-card id="1"></article-card>
-    <article-card id="2"></article-card>
-    <another-article-card id="1"></another-article-card>
+    <base-article-card id="1"></base-article-card>
+    <advanced-article-card id="2"></advanced-article-card>
   </div>
 
-  <template id="article-card-template">  
-    <div>
+  <template id="base-article-card-template">  
+    <div class="article-card">
       <div v-if="loading">Loading...</div>
       <div v-else>
-        <h2>{{articleTitle}}</h2>
+        <h2>{{title}}</h2>
         {{body}}
       </div>
     </div>
   </template>
 
-  <template id="another-article-card-template">  
-    <div>
+  <template id="advanced-article-card-template">  
+    <div class="article-card">
       <div v-if="loading">Loading...</div>
       <div v-else>
         <h2>{{articleTitle}}</h2>
@@ -55,7 +57,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
   <script>
-    const BaseArticleCard = Vue.extend({
+    const BaseArticleCard = Vue.component("base-article-card", {
+      props: ["id"],
+      template: "#base-article-card-template",
       data() {
         return {
           loading: false,
@@ -86,16 +90,9 @@
       }
     });
 
-    Vue.component("article-card", {
+    Vue.component("advanced-article-card", {
       extends: BaseArticleCard,
-      template: "#article-card-template",
-      props: ["id"]
-    });
-
-    Vue.component("another-article-card", {
-      extends: BaseArticleCard,
-      template: "#another-article-card-template",
-      props: ["id"]
+      template: "#advanced-article-card-template"
     });
     
     new Vue({ 
