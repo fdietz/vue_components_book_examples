@@ -25,94 +25,60 @@
 
 <body>
   <div id="demo">
-    <survey-input-text question="What's your name?" placeholder="e.g. Michael Jordan" @input="handleChange"></survey-input-text>
-    <survey-input-radio question="What's your favourite JS framework?" :options="['Angular', 'React', 'Vue.js']" @change="handleChange"></survey-input-radio>
-    <survey-input-checkbox question="Do you like to use JSX in the future?" @change="handleChange"></survey-input-checkbox>
+    <card-profile first-name="Michael" age="30" />
+    <card-profile first-name="Lana" age="32" />
   </div>
 
-  <template id="survey-input-text">  
+  <template id="card-profile-template">  
     <div>
-      <h2>{{question}}</h2>
-      <input v-model="value" :placeholder="placeholder"/>
-    </div>
-  </template>
-  
-  <template id="survey-input-radio">  
-    <div>
-      <h2>{{question}}</h2>
-      <div v-for="option in options" key="option">
-        <label>
-          <input type="radio" :value="option" v-model="value">
-          {{option}}
-        </label>
-      </div> 
-    </div>
-  </template>
-  
-  <template id="survey-input-checkbox">  
-    <div>
-      <h2>{{question}}</h2>
-      <label>
-        <input type="checkbox" ng-modal="value">
-        Yes, I love it!
-      </label>
+      <h2>My Profile</h2>
+      <div>
+        {{translate("firstName")}}: {{firstName}}
+      </div>
+      <div>
+        {{translate("age")}}: {{age}}
+      </div>
     </div>
   </template>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
   <script>
-    const SurveyInputBase = Vue.extend({
-      props: {
-        question: {
-          type: String,
-          required: true
-        }
+    const TRANSLATIONS = {
+      en: {
+        firstName: "Firstname",
+        age: "Age"
       },
-      data() {
-        return {
-          value: null
-        }
-      },
+      de: {
+        firstName: "Vorname",
+        age: "Alter"
+      }
+    };
+
+    const Translate = Vue.mixin({
       methods: {
-        triggerChange() {
-          this.$emit("change", this.data);
+        translate(key) {
+          return TRANSLATIONS[this.$root.locale][key];
         }
+      },
+      ready() {
+        // default locale set to "en"
+        this.$root.$set("locale", "en");
       }
     });
 
-    Vue.component("SurveyInputText", {
-      extends: SurveyInputBase,
-      template: "#survey-input-text",
+    Vue.component("card-profile", {
+      template: "#card-profile-template",
       props: {
-        placeholder: {
-          type: String,
-          required: true
-        }
+        firstName: String,
+        age: String
       }
-    });
-
-    Vue.component("SurveyInputRadio", {
-      extends: SurveyInputBase,
-      template: "#survey-input-radio",
-      props: {
-        options: {
-          type: Array,
-          required: true
-        }
-      }
-    });
-    
-    Vue.component("SurveyInputCheckbox", {
-      extends: SurveyInputBase,
-      template: "#survey-input-checkbox"
     });
 
     new Vue({ 
       el: '#demo',
-      methods: {
-        handleChange(newValue) {
-          console.log("> changed to ", newValue)
-        }
+      mixins: [Translate],
+      data: {
+        locale: "en"
       }
     });
   </script>

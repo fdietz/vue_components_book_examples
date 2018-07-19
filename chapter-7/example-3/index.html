@@ -25,15 +25,28 @@
 
 <body>
   <div id="demo">
-    <article-card />
+    <article-card id="1"></article-card>
+    <article-card id="2"></article-card>
+    <another-article-card id="1"></another-article-card>
   </div>
 
   <template id="article-card-template">  
     <div>
-      <h1>My Article</h1>
-      <span v-if="loading">Loading...</span>
-      <div>
-        {{response.body}}
+      <div v-if="loading">Loading...</div>
+      <div v-else>
+        <h2>{{articleTitle}}</h2>
+        {{body}}
+      </div>
+    </div>
+  </template>
+
+  <template id="another-article-card-template">  
+    <div>
+      <div v-if="loading">Loading...</div>
+      <div v-else>
+        <h2>{{articleTitle}}</h2>
+        <p>Written by User ID: {{userId}}</p>
+        {{body}}
       </div>
     </div>
   </template>
@@ -42,35 +55,49 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
   <script>
-    const DataLoader = Vue.mixin({
+    const BaseArticleCard = Vue.extend({
       data() {
         return {
           loading: false,
-          response: null
+          title: "",
+          body: "",
+          userId: ""
+        }
+      },
+      computed: {
+        articleTitle() { 
+          return `Article: ${this.title}`;
         }
       },
       methods: {
-        load(url) {
-          console.log("load", url)
+        load(id) {
           this.loading = true;
-          return axios.get(url)
+          return axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
             .then(response => {
-              this.response = response.data;
+              this.title = response.data.title;
+              this.body = response.data.body;
+              this.userId = response.data.userId;
               this.loading = false;
-            })
+            });
         }
+      },
+      created() {
+        this.load(this.id);
       }
     });
 
     Vue.component("article-card", {
-      mixins: [DataLoader],
+      extends: BaseArticleCard,
       template: "#article-card-template",
-      created() {
-        console.log("created")
-        this.load("https://jsonplaceholder.typicode.com/posts/1")
-      }
+      props: ["id"]
     });
 
+    Vue.component("another-article-card", {
+      extends: BaseArticleCard,
+      template: "#another-article-card-template",
+      props: ["id"]
+    });
+    
     new Vue({ 
       el: '#demo'
     });

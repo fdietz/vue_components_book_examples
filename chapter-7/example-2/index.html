@@ -25,61 +25,52 @@
 
 <body>
   <div id="demo">
-    <card-profile first-name="Michael" age="30" />
-    <card-profile first-name="Lana" age="32" />
+    <article-card />
   </div>
 
-  <template id="card-profile-template">  
+  <template id="article-card-template">  
     <div>
-      <h2>My Profile</h2>
-      <div>
-        {{translate("firstName")}}: {{firstName}}
-      </div>
-      <div>
-        {{translate("age")}}: {{age}}
+      <span v-if="loading">Loading...</span>
+      <div v-else>
+        <h2>{{response.title}}</h2>
+        {{response.body}}
       </div>
     </div>
   </template>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
-  <script>
-    const TRANSLATIONS = {
-      en: {
-        firstName: "Firstname",
-        age: "Age"
-      },
-      de: {
-        firstName: "Vorname",
-        age: "Alter"
-      }
-    };
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
-    const Translate = Vue.mixin({
-      methods: {
-        translate(key) {
-          return TRANSLATIONS[this.$root.locale][key];
+  <script>
+    const DataLoader = Vue.mixin({
+      data() {
+        return {
+          loading: false,
+          response: null
         }
       },
-      ready() {
-        // default locale set to "en"
-        this.$root.$set("locale", "en");
+      methods: {
+        load(url) {
+          this.loading = true;
+          return axios.get(url)
+            .then(response => {
+              this.response = response.data;
+              this.loading = false;
+            })
+        }
       }
     });
 
-    Vue.component("card-profile", {
-      template: "#card-profile-template",
-      props: {
-        firstName: String,
-        age: String
+    Vue.component("article-card", {
+      mixins: [DataLoader],
+      template: "#article-card-template",
+      created() {
+        this.load("https://jsonplaceholder.typicode.com/posts/1")
       }
     });
 
     new Vue({ 
-      el: '#demo',
-      mixins: [Translate],
-      data: {
-        locale: "en"
-      }
+      el: '#demo'
     });
   </script>
 </body>
