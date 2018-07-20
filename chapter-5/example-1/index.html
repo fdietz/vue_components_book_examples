@@ -63,11 +63,12 @@
   <script>
     Vue.component("SwitchToggle", {
       template: "#switch-template",
-      data() {
-        return {
-          value: false
-        }
-      }
+      props: ["value, input"]
+      // data() {
+      //   return {
+      //     value: false
+      //   }
+      // }
     });
 
     Vue.component("Toggle", {
