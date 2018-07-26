@@ -8,83 +8,77 @@
   <title>Demo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
-  <link rel="stylesheet" href="../../shared/image_card.css">
   <style>
-    .tab-list {
-      display: flex;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-   
-    .tab {
-      display: block; 
-      background-color: #eee;
-      
-      padding: 0.5rem 1rem;
+    body {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1em;
+
+      color: #555;
     }
 
-    .tab:hover {
-      background: #e0e0e0;
-    }
-
-    .tab.active {
-      background: #64a1e6;
-      color: white;
-    }
-    
-    .tab-content {
-      border: 1px solid #ccc;
-      padding: 1rem;
+    section {
+      margin: 1rem;
     }
   </style>
 </head>
 
 <body>
   <div id="demo">
-    <ul class="tab-list">
-      <li 
-        v-for="tab in tabs"
-        :key="tab"
-        >
-        <a
-          :class="['tab', { active: currentTab === tab }]" 
-          @click="currentTab = tab">
-          {{tab}}
-        </a>
-      </li>
-    </ul>
-
-    <component
-      v-bind:is="currentTabComponent"
-      class="tab-content">
-    </component>
+    <card-profile first-name="Michael" age="30" />
+    <card-profile first-name="Lana" age="32" />
   </div>
+
+  <template id="card-profile-template">  
+    <div>
+      <h2>My Profile</h2>
+      <div>
+        {{translate("firstName")}}: {{firstName}}
+      </div>
+      <div>
+        {{translate("age")}}: {{age}}
+      </div>
+    </div>
+  </template>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
   <script>
-    Vue.component('tab-home', { 
-      template: '<div>Home component</div>' 
+    const TRANSLATIONS = {
+      en: {
+        firstName: "Firstname",
+        age: "Age"
+      },
+      de: {
+        firstName: "Vorname",
+        age: "Alter"
+      }
+    };
+
+    const Translate = Vue.mixin({
+      methods: {
+        translate(key) {
+          return TRANSLATIONS[this.$root.locale][key];
+        }
+      },
+      ready() {
+        // default locale set to "en"
+        this.$root.$set("locale", "en");
+      }
     });
 
-    Vue.component('tab-posts', { 
-      template: '<div>Posts component</div>' 
-    });
-
-    Vue.component('tab-archive', { 
-      template: '<div>Archive component</div>' 
+    Vue.component("card-profile", {
+      template: "#card-profile-template",
+      props: {
+        firstName: String,
+        age: String
+      }
     });
 
     new Vue({ 
       el: '#demo',
+      mixins: [Translate],
       data: {
-        currentTab: 'Home',
-        tabs: ['Home', 'Posts', 'Archive']
-      },
-      computed: {
-        currentTabComponent: function () {
-          return 'tab-' + this.currentTab.toLowerCase()
-        }
+        locale: "en"
       }
     });
   </script>
