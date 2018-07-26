@@ -59,9 +59,10 @@
   <script>
     Vue.component("SwitchToggle", {
       template: "#switch-template",
-      data() {
-        return {
-          value: false
+      props: {
+        value: {
+          type: Boolean,
+          default: false
         }
       }
     });
