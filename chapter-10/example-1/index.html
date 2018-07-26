@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+</head>
+
+<body>
+  <div id="demo">
+    <page-layout :user="user"></page-layout>
+  </div>
+
+  <template id="page-layout-template">
+    <div class="page-layout">
+      <page-layout-header :user="user"></page-layout-header>
+    </div>
+  </template>
+
+  <template id="page-layout-header-template">
+    <div class="page-layout-header">
+      <header-menu :user="user"></header-menu>
+    </div>
+  </template>
+
+  <template id="header-menu-template">
+    <div class="header-menu">
+      <user-avatar :user="user"></user-avatar>
+    </div>
+  </template>
+
+  <template id="user-avatar-template">
+    <div class="user-avatar">
+      <div>{{user.name}}</div>
+    </div>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    Vue.component("page-layout", {
+      template: "#page-layout-template",
+      props: ["user"]
+    });
+    Vue.component("page-layout-header", {
+      template: "#page-layout-header-template",
+      props: ["user"]
+    });
+    Vue.component("header-menu", {
+      template: "#header-menu-template",
+      props: ["user"]
+    });
+    Vue.component("user-avatar", {
+      template: "#user-avatar-template",
+      props: ["user"]
+    });
+
+    new Vue({ 
+      el: '#demo',
+      data: {
+        user: { id: 1, name: "Donald Duck" }
+      }
+    });
+  </script>
+</body>
+
+</html>
