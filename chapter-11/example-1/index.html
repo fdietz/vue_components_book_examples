@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <style>
+    .button {
+      position: relative;
+      display: block;
+
+      appearance: none;
+
+      border-radius: 2px;
+      border: 0;
+
+      font-family: inherit;
+      font-size: 1rem;
+      text-align: center;
+      overflow: hidden;
+
+      padding: 6px 12px;
+
+      height: 2.6em;
+
+      color: #555;
+      background-color: #e4e4e4;
+    }
+
+    .button.dark {
+      color: #fff;
+      background-color: #000;
+    }
+
+    .mb {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <select v-model="theme.name" class="mb">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+    <themed-button>Click me</themed-button>
+  </div>
+
+  <template id="themed-button-template">
+    <button :class="['button', theme.name]">
+      <slot></slot>
+    </button>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    Vue.component("themed-button", {
+      template: "#themed-button-template",
+      inject: ["theme"]
+    });
+
+    new Vue({ 
+      el: '#demo',
+      provide() {
+        return {
+          theme: this.theme
+        }
+      },
+      data: {
+        theme: {
+          name: "dark"
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
