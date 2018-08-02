@@ -14,7 +14,7 @@
 <body>
   <div id="demo">
     <List :items="listItems">
-      <template scope="slotProps" class="list-item">
+      <template slot-scope="slotProps" class="list-item">
         <input type="checkbox" v-model="slotProps.item.completed" class="list-item__checkbox" />
         <div class="list-item__title">{{slotProps.item.name}}</div>
       </template>

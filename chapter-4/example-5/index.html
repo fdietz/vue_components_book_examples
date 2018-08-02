@@ -14,10 +14,10 @@
 <body>
   <div id="demo">
     <List :items="listItems">
-      <template slot-scope="slotProps" class="list-item">
-        <input type="checkbox" v-model="slotProps.item.completed" class="list-item__checkbox" />
-        <div class="list-item__title">{{slotProps.item.name}}</div>
-        <button @click="remove(slotProps.item)" class="list-item__remove">×</button>
+      <template slot-scope="{item}" class="list-item">
+        <input type="checkbox" v-model="item.completed" class="list-item__checkbox" />
+        <div class="list-item__title">{{item.name}}</div>
+        <button @click="remove(item)" class="list-item__remove">×</button>
       </template>
     </List>
   </div>
