@@ -1,0 +1,31 @@
+.carousel {
+  display: block;
+}
+
+.slide-container {
+  position: relative;
+  height: 200px
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 200px
+}
+
+.slide img {
+  width: auto;
+  height: 200px;
+}
+
+.carousel-controls {
+  margin-top: 1rem;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to { 
+  opacity: 0;
+}
