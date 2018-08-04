@@ -18,17 +18,26 @@
 
 <body>
   <div id="demo">
-    <tweet-item name="Name" handle="handle" image="../../shared/avatars/1.jpg" timeago="14h">
-      Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    <tweet-item 
+      name="Name" 
+      handle="handle" 
+      avatar-image="../../shared/avatars/1.jpg" 
+      text="Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      timeago="14h">
     </tweet-item>
-    <tweet-item name="Name" handle="handle" image="../../shared/avatars/3.jpg" timeago="14h">
-      <p>
-        Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      </p>
-      <img src="../../shared/cat.jpg">
+    <tweet-item 
+      name="Name" 
+      handle="handle" 
+      image="../../shared/cat.jpg"
+      avatar-image="../../shared/avatars/3.jpg" 
+      timeago="14h">
     </tweet-item>
-    <tweet-item name="Name" handle="handle" image="../../shared/avatars/5.jpg" timeago="14h">
-      Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    <tweet-item 
+      name="Name" 
+      handle="handle" 
+      avatar-image="../../shared/avatars/5.jpg" 
+      text="Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      timeago="14h">
     </tweet-item>
   </div>
 
@@ -36,15 +45,17 @@
     <div class="tweet-item">
       <div class="tweet-media">
         <div class="circle">
-          <img :src="image"/>
+          <img :src="avatarImage"/>
         </div>
       </div>
       <div class="tweet-content">
         <div class="tweet-meta">
           <span class="name">{{name}}</span><span class="handle">@{{handle}}</span><span class="divider">·</span> <span class="timeago">{{timeago}}</span>
         </div>
-        <div class="tweet-text">
-          <slot></slot>
+        <div class="tweet-body" v-html="text" v-if="text">
+        </div>
+        <div class="tweet-body image" v-if="image">
+          <img :src="image" />
         </div>
         <div class="tweet-actions">
           <div class="svg-icon reply">
@@ -72,6 +83,8 @@
         name: String,
         handle: String,
         timeago: String,
+        avatarImage: String,
+        text: String,
         image: String
       },
     });

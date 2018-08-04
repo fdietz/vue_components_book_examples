@@ -35,7 +35,7 @@
 }
 
 .tweet-content {
-
+  width: 100%;
 }
 
 .tweet-meta {
@@ -53,20 +53,23 @@
   margin-right: 0.5rem
 }
 
-.tweet-text {
+.tweet-body {
   margin-bottom: 1rem;
 }
 
-.tweet-text a {
+.tweet-body a {
   color: #1DA1F2;
 }
 
-.tweet-text a:hover {
+.tweet-body a:hover {
   text-decoration: underline;
 }
 
-.text-text img {
+.tweet-body.image img {
   display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
 }
 
 .tweet-actions {
