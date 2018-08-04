@@ -1,0 +1,84 @@
+.tweet-item {
+  display: flex;
+  width: 600px;
+  color: #333;
+  background-color: white;
+  border-bottom: 1px solid #e6ecf0;
+  padding: 1.5rem 1rem; 
+
+  cursor: pointer;
+} 
+
+.tweet-item:hover {
+  background-color: #f5f8fa;
+}
+
+.tweet-media {
+
+}
+
+.tweet-media .circle {
+  width: 48px;
+  height: 48px;
+  margin-right: 1rem;
+  display: inline-block;
+  overflow: hidden;
+  background: #f3f6f9;
+  border-radius: 50%;
+}
+
+.tweet-media .circle img {
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.tweet-content {
+
+}
+
+.tweet-meta {
+  margin-bottom: 0.5rem;
+  color: rgb(101, 119, 134);
+}
+
+.tweet-meta .name {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  color: #333;
+}
+
+.tweet-meta .handle {
+  margin-right: 0.5rem
+}
+
+.tweet-text {
+  margin-bottom: 1rem;
+}
+
+.tweet-text a {
+  color: #1DA1F2;
+}
+
+.tweet-text a:hover {
+  text-decoration: underline;
+}
+
+.tweet-actions {
+  display: flex;
+  color: rgb(101, 119, 134);
+}
+
+.tweet-actions .svg-icon {
+  width: 20px;
+  height: 20px;
+
+  fill: rgb(101, 119, 134);
+
+  margin-right: 6rem;
+}
+
+.tweet-actions .svg-icon:hover {
+  fill: #1DA1F2;
+}
