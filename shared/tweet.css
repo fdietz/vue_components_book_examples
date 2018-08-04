@@ -65,6 +65,10 @@
   text-decoration: underline;
 }
 
+.text-text img {
+  display: block;
+}
+
 .tweet-actions {
   display: flex;
   color: rgb(101, 119, 134);
