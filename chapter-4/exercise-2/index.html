@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
   <link rel="stylesheet" href="../../shared/carousel.css">
+  <link rel="stylesheet" href="../../shared/button.css">
 </head>
 
 <body>
@@ -21,8 +22,8 @@
           </transition>
         </div>
         <div class="carousel-controls">
-          <button @click="gotoPrevious">Previous</button>
-          <button @click="gotoNext">Next</button>
+          <button @click="gotoPrevious" class="button"><</button>
+          <button @click="gotoNext" class="button">></button>
         </div>
       </div>
     </image-carousel>

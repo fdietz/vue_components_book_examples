@@ -1,5 +1,5 @@
 .carousel {
-  display: block;
+  width: 300px;
 }
 
 .slide-container {
@@ -20,7 +20,13 @@
 }
 
 .carousel-controls {
+  display: flex;
+  justify-content: center;
   margin-top: 1rem;
+}
+
+.carousel-controls button + button {
+  margin-left: 1rem;
 }
 
 .fade-enter-active, .fade-leave-active {
