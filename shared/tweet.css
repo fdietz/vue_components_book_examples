@@ -70,7 +70,7 @@
   text-decoration: underline;
 }
 
-.tweet-body.image img {
+.tweet-body img {
   display: block;
   width: 100%;
   height: auto;
