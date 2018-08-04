@@ -14,21 +14,22 @@
 <body>
   <div id="demo">
     <image-carousel :images="images">
+      <div slot-scope="{currentImage, gotoNext, gotoPrevious}" class="carousel">
+        <div class="slide-container">
+          <transition name="fade">
+            <img :src="currentImage.url" :key="currentImage.id" class="slide"/>
+          </transition>
+        </div>
+        <div class="carousel-controls">
+          <button @click="gotoPrevious">Previous</button>
+          <button @click="gotoNext">Next</button>
+        </div>
+      </div>
     </image-carousel>
   </div>
 
   <template id="image-carousel-template">
-    <div class="carousel">
-      <div class="slide-container">
-        <transition name="fade">
-          <img :src="currentImage.url" :key="currentImage.id" class="slide"/>
-        </transition>
-      </div>
-      <div class="carousel-controls">
-        <button @click="gotoPrevious">Previous</button>
-        <button @click="gotoNext">Next</button>
-      </div>
-    </div>
+    <slot :current-image="currentImage" :goto-next="gotoNext" :goto-previous="gotoPrevious"></slot>
   </template>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
