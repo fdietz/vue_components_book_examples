@@ -49,6 +49,11 @@
   color: #333;
 }
 
+.tweet-meta .name:hover {
+  color: #1DA1F2;
+  text-decoration: underline;
+}
+
 .tweet-meta .handle {
   margin-right: 0.5rem
 }
