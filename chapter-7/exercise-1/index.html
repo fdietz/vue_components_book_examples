@@ -54,16 +54,24 @@
       </li>
     </ul>
 
-    <component
-      :is="currentTabComponent"
-      class="tab-content">
-    </component>
+    <keep-alive>
+      <component
+        :is="currentTabComponent"
+        class="tab-content">
+      </component>
+    </keep-alive>
   </div>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
   <script>
     Vue.component('tab-home', { 
-      template: '<div>Home component</div>' 
+      template: '<div>Home component</div>' ,
+      created() {
+        console.log("created")
+      },
+      beforeDestroy() {
+        console.log("destroyed")
+      }
     });
 
     Vue.component('tab-posts', { 
