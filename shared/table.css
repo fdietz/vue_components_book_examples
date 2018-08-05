@@ -1,0 +1,40 @@
+th {
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 2px solid #efefef;
+}
+
+
+th, td {
+  padding: 10px 20px;
+}
+
+th.active {
+  color: #1DA1F2;
+}
+
+th.active .arrow {
+  color: #1DA1F2;
+  opacity: 1;
+}
+
+.arrow {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  opacity: 0;
+}
+
+.arrow.asc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #1DA1F2;
+}
+
+.arrow.dsc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #1DA1F2;
+}
