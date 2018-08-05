@@ -8,67 +8,70 @@
   <title>Demo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
-  <link rel="stylesheet" href="../../shared/carousel.css">
-  <link rel="stylesheet" href="../../shared/button.css"
+  <link rel="stylesheet" href="../../shared/list.css">
 </head>
 
 <body>
   <div id="demo">
-    <image-carousel :images="images">
-    </image-carousel>
+    <List :items="listItems">
+      <template slot-scope="{item}" class="list-item">
+        <input type="checkbox" v-model="item.completed" class="list-item__checkbox" />
+        <div class="list-item__title">{{item.name}}</div>
+        <button @click="remove(item)" class="list-item__remove">×</button>
+      </template>
+    </List>
   </div>
 
-  <template id="image-carousel-template">
-    <div class="carousel">
-      <div class="slide-container">
-        <transition name="fade">
-          <img :src="currentImage.url" :key="currentImage.id" class="slide"/>
-        </transition>
-      </div>
-      <div class="carousel-controls">
-        <button @click="gotoPrevious" class="button"><</button>
-        <button @click="gotoNext" class="button">></button>
+  <template id="template-list">  
+    <div class="list-container">
+      <input type="text" v-model="searchStr" placeholder="Filter by...">
+      <div class="list">
+        <div v-for="item in filteredItems" class="list-item">
+          <slot :item="item"></slot>
+        </div>
       </div>
     </div>
   </template>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
   <script>
-  Vue.component("image-carousel", {
-    template: "#image-carousel-template",
-    props: ["images"],
+  Vue.component("List", {
+    template: "#template-list",
     data() {
       return {
-        slideIndex: 0
+        searchStr: ""
+      }
+    },
+    props: {
+      items: {
+        type: Array, 
+        default: []
       }
     },
     computed: {
-      currentImage() {
-        return this.images[this.slideIndex];
-      }
-    },
-    methods: {
-      gotoNext() {
-        if (this.slideIndex + 1 < this.images.length) {
-          this.slideIndex += 1;
-        }
-      },
-      gotoPrevious() {
-        if (this.slideIndex > 0) {
-          this.slideIndex -= 1;
+      filteredItems() {
+        if (this.searchStr.length > 0) {
+          return this.items.filter(item => item.name.indexOf(this.searchStr) !== -1);
+        } else {
+          return this.items;
         }
       }
     }
   });
-
+  
   new Vue({ 
     el: '#demo',
     data: {
-      images: [
-        { id: 1, url: "../../shared/cat.jpg" },
-        { id: 2, url: "../../shared/cat2.jpg" },
-        { id: 3, url: "../../shared/cat3.jpg" }
+      listItems: [
+        {id: 1, name: "item 1", completed: false},
+        {id: 2, name: "item 2", completed: false},
+        {id: 3, name: "item 3", completed: false}
       ]
+    },
+    methods: {
+      remove(item) {
+        this.listItems.splice(this.listItems.indexOf(item), 1);
+      }
     }
   });
   </script>
