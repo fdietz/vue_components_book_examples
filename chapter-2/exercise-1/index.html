@@ -19,25 +19,9 @@
 <body>
   <div id="demo">
     <tweet-item 
-      name="Name" 
-      handle="handle" 
-      avatar-image="../../shared/avatars/1.jpg" 
-      text="Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat."
-      timeago="14h">
-    </tweet-item>
-    <tweet-item 
-      name="Name" 
-      handle="handle" 
-      image="../../shared/cat.jpg"
-      avatar-image="../../shared/avatars/3.jpg" 
-      timeago="14h">
-    </tweet-item>
-    <tweet-item 
-      name="Name" 
-      handle="handle" 
-      avatar-image="../../shared/avatars/5.jpg" 
-      text="Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat."
-      timeago="14h">
+      v-for="tweet in tweets"
+      v-bind="tweet"
+      :key="tweet.id">
     </tweet-item>
   </div>
 
@@ -52,10 +36,14 @@
         <div class="tweet-meta">
           <span class="name">{{name}}</span><span class="handle">@{{handle}}</span><span class="divider">·</span> <span class="timeago">{{timeago}}</span>
         </div>
-        <div class="tweet-body" v-html="text" v-if="text">
-        </div>
-        <div class="tweet-body image" v-if="image">
-          <img :src="image" />
+        <div class="tweet-body">
+          <div class="text-wrapper" v-html="text" v-if="text"></div>
+          <div class="image-wrapper" v-if="image">
+            <img :src="image" />
+          </div>
+          <div class="video-wrapper" v-if="videoId">
+            <iframe :src="videoUrl" frameborder="0" class="video"></iframe>
+          </div>
         </div>
         <div class="tweet-actions">
           <div class="svg-icon reply">
@@ -85,10 +73,54 @@
         timeago: String,
         avatarImage: String,
         text: String,
-        image: String
+        image: String,
+        videoId: String
       },
+      computed: {
+        videoUrl() {
+          return "https://www.youtube.com/embed/" + this.videoId;
+        }
+      }
     });
-    new Vue({ el: '#demo' });
+    new Vue({ 
+      el: '#demo',
+      data: {
+        tweets: [
+          {
+            id: 1,
+            name: "Name" ,
+            handle: "handle" ,
+            timeago: "12min",
+            avatarImage: "../../shared/avatars/1.jpg",
+            text: "Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          },
+          {
+            id: 2,
+            name: "Name",
+            handle: "handle",
+            timeago: "14h",
+            avatarImage: "../../shared/avatars/2.jpg",
+            videoId: "TRJMT9yjONQ"
+          },
+          {
+            id: 3,
+            name: "Name" ,
+            handle: "handle" ,
+            timeago: "14h",
+            avatarImage: "../../shared/avatars/3.jpg",
+            image: "../../shared/cat.jpg"
+          },
+          {
+            id: 4,
+            name: "Name" ,
+            handle: "handle" ,
+            timeago: "14h",
+            avatarImage: "../../shared/avatars/4.jpg",
+            text: "Lorem ipsum dolor sit amet, <a>consectetur</a> adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a>exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          }
+        ]
+      }
+    });
   </script>
 </body>
 </html>

@@ -70,11 +70,26 @@
   text-decoration: underline;
 }
 
-.tweet-body img {
+.image-wrapper img {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 4px;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+}
+
+.video-wrapper .video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .tweet-actions {
