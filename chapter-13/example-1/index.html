@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/main.css">
+  <link rel="stylesheet" href="../../shared/image_card.css">
+
+  <style>
+    .tab-list {
+      display: flex;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    
+    .tab-link {
+      display: block;
+      color: #555;
+      background-color: #eee;
+      
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+    }
+    
+    .tab-link:hover {
+      background: #e0e0e0;
+    }
+
+    .tab-link.is-active {
+      background: #64a1e6;
+      color: white;
+    }
+
+    .tab-content {
+      border: 1px solid #eee;
+      padding: 1rem;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="demo">
+    <tabs>
+      <tab name="First">
+        Content of the first tab
+      </tab>
+      <tab name="Second">
+        Content of the second tab
+      </tab>
+    </tabs>
+  </div>
+
+  <template id="tabs-component-template">
+    <div class="tabs-component">
+      <ul role="tablist" class="tab-list">
+        <li v-for="(tab, i) in tabs" :key="i" class="tab" role="presentation">
+          <a 
+            v-html="tab.name" :href="tab.hash"
+            :aria-controls="tab.hash" :aria-selected="tab.isActive" role="tab" 
+            :class="{ 'is-active': tab.isActive }" class="tab-link"
+            @click="selectTab(tab.hash, $event)"></a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <slot></slot>
+      </div>
+    </div>
+  </template>
+  
+  <template id="tab-component-template">
+    <section v-show="isActive" :id="hash" :aria-hidden="!isActive" role="tabpanel">
+      <slot></slot>
+    </section>
+  </template>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script>
+    Vue.component("tabs", {
+      template: "#tabs-component-template",
+      data()  {
+        return {
+          tabs: []
+        }
+      },
+      created() {
+        this.tabs = this.$children;
+        
+      },
+      mounted() {
+        if (this.tabs.length) {
+          this.selectTab(this.tabs[0].hash);
+        }
+      },
+      methods: {
+        findTab(hash) {
+          return this.tabs.find(tab => tab.hash === hash);
+        },
+        selectTab(hash, event) {
+          const selectedTab = this.findTab(hash);
+          if (!selectedTab) {
+              return;
+          }
+
+          this.tabs.forEach(tab => {
+            tab.isActive = (tab.hash === selectedTab.hash);
+          });
+          this.$emit('changed', { tab: selectedTab });
+        }
+      }
+    });
+
+    Vue.component("tab", {
+      template: "#tab-component-template",
+      props: [ "name" ],
+      data() {
+        return {
+          isActive: {
+            type: Boolean,
+            default: false
+          }
+        }
+      },
+      computed: {
+        hash() {
+          return `#${this.name.toLowerCase().replace(/ /g, '-')}`;
+        }
+      }
+    });
+
+    new Vue({ el: '#demo' });
+  </script>
+</body>
+</html>
