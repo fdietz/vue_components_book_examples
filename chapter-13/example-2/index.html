@@ -8,132 +8,101 @@
   <title>Demo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
-  <link rel="stylesheet" href="../../shared/image_card.css">
-
-  <style>
-    .tab-list {
-      display: flex;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    
-    .tab-link {
-      display: block;
-      color: #555;
-      background-color: #eee;
-      
-      padding: 0.5rem 1rem;
-      text-decoration: none;
-    }
-    
-    .tab-link:hover {
-      background: #e0e0e0;
-    }
-
-    .tab-link.is-active {
-      background: #64a1e6;
-      color: white;
-    }
-
-    .tab-content {
-      border: 1px solid #eee;
-      padding: 1rem;
-    }
-  </style>
-
+  <link rel="stylesheet" href="../../shared/expandable.css">
 </head>
 
 <body>
   <div id="demo">
-    <tabs>
-      <tab name="First">
-        Content of the first tab
-      </tab>
-      <tab name="Second">
-        Content of the second tab
-      </tab>
-    </tabs>
+    <accordion>
+      <accordion-item name="Item 1">
+        Content of first item
+      </accordion-item>
+      <accordion-item name="Item 2">
+        Content of second item
+      </accordion-item>
+      <accordion-item name="Item 3">
+        Content of third item
+      </accordion-item>
+    </accordion>
   </div>
 
-  <template id="tabs-component-template">
-    <div class="tabs-component">
-      <ul role="tablist" class="tab-list">
-        <li v-for="(tab, i) in tabs" :key="i" class="tab" role="presentation">
-          <a 
-            v-html="tab.name" :href="tab.hash"
-            :aria-controls="tab.hash" :aria-selected="tab.isActive" role="tab" 
-            :class="{ 'is-active': tab.isActive }" class="tab-link"
-            @click="selectTab(tab.hash, $event)"></a>
-        </li>
-      </ul>
-      <div class="tab-content">
+  <template id="accordion-item-template">
+    <div class="expandable">
+      <h2 class="expandable__header">
+        {{name}}
+        <button class="expandable__trigger" :aria-expanded="isActive" @click="select">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
+            <rect v-if="isActive" height="8" width="2" y="1" x="4"/>
+            <rect height="2" width="8" y="4" x="1"/>
+          </svg> 
+        </button>
+      </h2>
+      <div v-if="isActive" class="expandable__content">
         <slot></slot>
       </div>
     </div>
   </template>
   
-  <template id="tab-component-template">
-    <section v-show="isActive" :id="hash" :aria-hidden="!isActive" role="tabpanel">
+  <template id="accordion-template">
+    <div class="accordion">
       <slot></slot>
     </section>
   </template>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
   <script>
-    Vue.component("tabs", {
-      template: "#tabs-component-template",
-      data()  {
-        return {
-          tabs: []
-        }
-      },
-      created() {
-        this.tabs = this.$children;
-        
-      },
-      mounted() {
-        const match = this.findTab(window.location.hash);
-        if (match) {
-          this.selectTab(window.location.hash)
-        } else {
-          if (this.tabs.length) {
-            this.selectTab(this.tabs[0].hash);
-          }
+    Vue.component("accordion-item", {
+      template: "#accordion-item-template",
+      inject: ["accordion"],
+      props: ["name"],
+      computed: {
+        isActive() {
+          return this.accordion.isActive(this.name);
         }
       },
       methods: {
-        findTab(hash) {
-          return this.tabs.find(tab => tab.hash === hash);
-        },
-        selectTab(hash, event) {
-          const selectedTab = this.findTab(hash);
-          if (!selectedTab) {
-              return;
-          }
-
-          this.tabs.forEach(tab => {
-            tab.isActive = (tab.hash === selectedTab.hash);
-          });
-          this.$emit('changed', { tab: selectedTab });
+        select() {
+          this.accordion.select(this.name);
         }
+      },
+      created() {
+        this.accordion.register(this.name);
       }
     });
 
-    Vue.component("tab", {
-      template: "#tab-component-template",
-      props: [ "name" ],
-      data() {
+    Vue.component("accordion", {
+      template: "#accordion-template",
+      provide() {
         return {
-          isActive: {
-            type: Boolean,
-            default: false
+          accordion: {
+            items: this.items,
+            register: this.register,
+            select: this.select,
+            isActive: this.isActive
           }
         }
       },
-      computed: {
-        hash() {
-          return `#${this.name.toLowerCase().replace(/ /g, '-')}`;
+      data() {
+        return {
+          items: {}
+        }
+      },
+      methods: {
+        register(name) {
+          this.$set(this.items, name, false);
+        },
+        isActive(name) {
+          return this.items[name];
+        },
+        select(name) {
+          const currentState = this.items[name];
+          Object.keys(this.items).map(n => {
+            if (n === name) {
+              this.$set(this.items, n, !currentState);  
+            } else {
+              this.$set(this.items, n, false);
+            }
+          });
         }
       }
     });

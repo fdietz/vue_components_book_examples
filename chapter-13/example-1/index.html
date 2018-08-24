@@ -8,7 +8,6 @@
   <title>Demo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
-  <link rel="stylesheet" href="../../shared/image_card.css">
 
   <style>
     .tab-list {
@@ -53,6 +52,9 @@
       <tab name="Second">
         Content of the second tab
       </tab>
+      <tab name="Third">
+        Content of the third tab
+      </tab>
     </tabs>
   </div>
 
@@ -60,11 +62,10 @@
     <div class="tabs-component">
       <ul role="tablist" class="tab-list">
         <li v-for="(tab, i) in tabs" :key="i" class="tab" role="presentation">
-          <a 
-            v-html="tab.name" :href="tab.hash"
+          <a :href="tab.hash"
             :aria-controls="tab.hash" :aria-selected="tab.isActive" role="tab" 
             :class="{ 'is-active': tab.isActive }" class="tab-link"
-            @click="selectTab(tab.hash, $event)"></a>
+            @click="selectTab(tab.hash, $event)">{{tab.name}}</a>
         </li>
       </ul>
       <div class="tab-content">

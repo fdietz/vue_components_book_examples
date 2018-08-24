@@ -27,3 +27,6 @@
   outline: 2px solid #aaa;
 }
 
+.expandable__content {
+  padding: 1rem 0;
+}
