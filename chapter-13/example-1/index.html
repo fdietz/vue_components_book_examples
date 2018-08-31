@@ -65,7 +65,7 @@
           <a :href="tab.hash"
             :aria-controls="tab.hash" :aria-selected="tab.isActive" role="tab" 
             :class="{ 'is-active': tab.isActive }" class="tab-link"
-            @click="selectTab(tab.hash, $event)">{{tab.name}}</a>
+            @click="selectTab(tab.hash)">{{tab.name}}</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -102,7 +102,7 @@
         findTab(hash) {
           return this.tabs.find(tab => tab.hash === hash);
         },
-        selectTab(hash, event) {
+        selectTab(hash) {
           const selectedTab = this.findTab(hash);
           if (!selectedTab) {
               return;
