@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Demo</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/normalize-5.0.0.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
   <link rel="stylesheet" href="../../shared/list.css">
 </head>
@@ -14,7 +14,7 @@
 <body>
   <div id="demo">
     <List :items="listItems">
-      <template slot-scope="{item}" class="list-item">
+      <template v-slot:default="{item}" class="list-item">
         <input type="checkbox" v-model="item.completed" class="list-item__checkbox" />
         <div class="list-item__title">{{item.name}}</div>
         <button @click="remove(item)" class="list-item__remove">×</button>
@@ -30,7 +30,7 @@
     </div>
   </template>
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script src='../../shared/vue-2.6.10.js'></script>
   <script>
   Vue.component("List", {
     template: "#template-list",

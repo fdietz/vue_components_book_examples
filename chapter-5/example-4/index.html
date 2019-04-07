@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Demo</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/normalize-5.0.0.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
   <link rel="stylesheet" href="../../shared/expandable.css">
   <style>
@@ -23,24 +23,26 @@
 <body>
   <div id="demo">
     <Toggle @change="handleChange">
-      <div slot-scope="{active, togglerProps, togglerEvents}" class="expandable">
-        <h2 class="expandable__header">
-          Heading 2
-          <button class="expandable__trigger" v-bind="togglerProps" v-on="togglerEvents" >
-            <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
-              <rect v-if="active" height="8" width="2" y="1" x="4"/>
-              <rect height="2" width="8" y="4" x="1"/>
-            </svg> 
-          </button>
-        </h2>
-        <div v-if="active" class="expandable__content">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+      <template v-slot:default="{active, togglerProps, togglerEvents}">
+        <div class="expandable">
+          <h2 class="expandable__header">
+            Heading 2
+            <button class="expandable__trigger" v-bind="togglerProps" v-on="togglerEvents" >
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 10 10">
+                <rect v-if="active" height="8" width="2" y="1" x="4"/>
+                <rect height="2" width="8" y="4" x="1"/>
+              </svg> 
+            </button>
+          </h2>
+          <div v-if="active" class="expandable__content">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+          </div>
         </div>
-      </div>
+      </template>
     </Toggle>
   </div>
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script src='../../shared/vue-2.6.10.js'></script>
   <script>
     Vue.component("Toggle", {
       render() {
@@ -52,7 +54,7 @@
           togglerEvents: {
             'click': this.toggle
           }
-        });
+        })[0];
       },
       data() {
         return {

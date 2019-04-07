@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Demo</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="../../shared/normalize-5.0.0.min.css">
   <link rel="stylesheet" href="../../shared/main.css">
   <link rel="stylesheet" href="../../shared/button.css">
   <link rel="stylesheet" href="../../shared/switch.css">
@@ -30,20 +30,20 @@
     <section>
       <h2>Button Toggle</h2>
       <Toggle @change="handleChange">
-        <div slot-scope="{active, toggle}">
+        <template v-slot:default="{active, toggle}">
           <button @click="toggle" class="button">Toggle</button>
           <div>{{active ? "yes" : "no"}}</div>
-        </div>
+        </template>
       </Toggle>
     </section>
     
     <section>
       <h2>Switch Toggle</h2>
       <Toggle @change="handleChange">
-        <div slot-scope="{active, toggle}">
+        <template v-slot:default="{active, toggle}">
           <switch-toggle :value="active" @input="toggle"></switch-toggle>
           <div>{{active ? "yes" : "no"}}</div>
-        </div>
+        </template>
       </Toggle>
     </section>
   </div>
@@ -55,7 +55,7 @@
     </label>
   </template>
   
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js'></script>
+  <script src='../../shared/vue-2.6.10.js'></script>
   <script>
     Vue.component("SwitchToggle", {
       template: "#switch-template",
@@ -72,7 +72,7 @@
         return this.$scopedSlots.default({
           active: this.active, 
           toggle: this.toggle
-        });
+        })[0];
       },
       data() {
         return {
